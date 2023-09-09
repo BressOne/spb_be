@@ -1,11 +1,16 @@
+type Timeframe = {
+  start: string;
+  end: string;
+};
+
 type WorkingHours = {
-  monday?: string;
-  tuesday?: string;
-  wednesday?: string;
-  thursday?: string;
-  friday?: string;
-  saturday?: string;
-  sunday?: string;
+  monday?: Timeframe;
+  tuesday?: Timeframe;
+  wednesday?: Timeframe;
+  thursday?: Timeframe;
+  friday?: Timeframe;
+  saturday?: Timeframe;
+  sunday?: Timeframe;
 };
 
 export type Restaurant = {
@@ -15,9 +20,9 @@ export type Restaurant = {
   timezoneOffsetMinutes: number;
 };
 
-export type Table = {
+export type Table<T = Restaurant> = {
   id: string;
-  restaurant?: Restaurant;
+  restaurant?: T;
 };
 
 type ReservationMetadata = {
@@ -27,10 +32,10 @@ type ReservationMetadata = {
   notes?: string;
 };
 
-export type Reservation = {
+export type Reservation<T = Table, K = Guest> = {
   id: string;
-  table?: Table;
-  guest?: Guest;
+  table?: T;
+  guest?: K;
   meta: ReservationMetadata;
 };
 

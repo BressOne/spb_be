@@ -1,7 +1,8 @@
 import { Schema, model, Types } from 'mongoose';
+import { v4 } from 'uuid';
 
 const ReservationSchema = new Schema({
-  id: { type: String, unique: true, required: true },
+  id: { type: String, unique: true, required: true, default: v4() },
   table: { type: Types.ObjectId, ref: 'TableSchema', required: true },
   guest: { type: Types.ObjectId, ref: 'GuestSchema', required: true },
   meta: {
