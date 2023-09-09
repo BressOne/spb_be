@@ -1,6 +1,7 @@
 import { Schema, model } from 'mongoose';
+import { Restaurant } from 'src/types/db';
 
-const RestaurantSchema = new Schema({
+const RestaurantSchema = new Schema<Restaurant>({
   id: { type: String, unique: true, required: true },
   name: { type: String, required: true },
   workingHours: {
