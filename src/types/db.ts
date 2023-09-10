@@ -27,8 +27,8 @@ export type Table<T = Restaurant> = {
 
 type ReservationMetadata = {
   personsToServe: number;
-  startTimeUTC: Date;
-  endTimeUTC: Date;
+  startTime: Date;
+  endTime: Date;
   notes?: string;
 };
 

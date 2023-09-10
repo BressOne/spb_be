@@ -2,7 +2,7 @@ import { ObjectId, Document } from 'mongoose';
 import { Restaurant } from 'src/types/db';
 import RestaurantSchema from '../schemas/restaurant';
 
-const getRestaurant = async (filter: any): Promise<Document<ObjectId, any, Restaurant> | null> =>
+const findRestaurant = async (filter: any): Promise<Document<ObjectId, any, Restaurant> | null> =>
   RestaurantSchema.findOne(filter);
 const addRestaurant = async (data: Restaurant) => new RestaurantSchema(data).save();
 const updateRestaurantByFilter = async (
@@ -11,8 +11,4 @@ const updateRestaurantByFilter = async (
 ): Promise<Document<ObjectId, any, Restaurant> | null> =>
   RestaurantSchema.findOneAndUpdate(filter, newData, { new: true });
 
-export default {
-  getRestaurant,
-  addRestaurant,
-  updateRestaurantByFilter,
-};
+export { findRestaurant, addRestaurant, updateRestaurantByFilter };

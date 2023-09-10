@@ -1,14 +1,14 @@
 import Koa from 'koa';
 import Router from 'koa-router';
 import { v4 } from 'uuid';
-import Restaurant from '../models/restaurant';
-import Table from '../models/table';
+import { findRestaurant } from 'src/models/restaurant';
+import { getRestaurantTables, addRestaurantTable, getRestaurantTable } from 'src/models/table';
 
 export const getTable = async (
   ctx: Koa.ParameterizedContext<any, Router.IRouterParamContext<any, {}>, any>,
   next: Koa.Next
 ) => {
-  const table = await Table.getRestaurantTable({ id: ctx.params.tableId }, ctx.params.restaurantId);
+  const table = await getRestaurantTable({ id: ctx.params.tableId }, ctx.params.restaurantId);
   // its a tricky thing about populated mongodb refs
   // mongodb can serch throug a document fields, that actually belong to it
   // and if populated reference field does not match the query, it'll be 'null'
@@ -29,7 +29,7 @@ export const getTables = async (
   ctx: Koa.ParameterizedContext<any, Router.IRouterParamContext<any, {}>, any>,
   next: Koa.Next
 ) => {
-  const tables = await Table.getRestaurantTables({}, ctx.params.restaurantId);
+  const tables = await getRestaurantTables({}, ctx.params.restaurantId);
   //@ts-ignore
   ctx.response.body = tables.filter((t) => t.restaurant);
 
@@ -40,13 +40,13 @@ export const addTable = async (
   ctx: Koa.ParameterizedContext<any, Router.IRouterParamContext<any, {}>, any>,
   next: Koa.Next
 ) => {
-  const restaurant = await Restaurant.getRestaurant({ id: ctx.params.restaurantId });
+  const restaurant = await findRestaurant({ id: ctx.params.restaurantId });
   if (!restaurant) {
     ctx.response.status = 400;
     await next();
     return;
   }
-  const table = await Table.addRestaurantTable({ id: v4(), restaurantObjectId: restaurant._id });
+  const table = await addRestaurantTable({ id: v4(), restaurantObjectId: restaurant._id });
   ctx.response.body = table;
   await next();
 };

@@ -9,8 +9,4 @@ const getRestaurantTables = async (filter: any, restaurantId: string): Promise<D
 const addRestaurantTable = async ({ id, restaurantObjectId }: { id: string; restaurantObjectId: ObjectId }) =>
   new TableSchema({ id, restaurant: restaurantObjectId }).save();
 
-export default {
-  getRestaurantTable,
-  getRestaurantTables,
-  addRestaurantTable,
-};
+export { getRestaurantTable, getRestaurantTables, addRestaurantTable };

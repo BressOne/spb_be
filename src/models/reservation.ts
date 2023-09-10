@@ -2,19 +2,23 @@ import { ObjectId } from 'mongoose';
 import { Reservation } from 'src/types/db';
 import ReservationSchema from '../schemas/reservation';
 
-const getReservation = async (filter: any): Promise<Reservation|null> => ReservationSchema.findOne(filter).lean();
-const getReservations = async (filter: any): Promise<Reservation[]> => ReservationSchema.find(filter).lean();
-const updateReservation = async (
+const getRestaurantReservation = async (filter: any): Promise<Reservation | null> =>
+  ReservationSchema.findOne(filter).lean();
+const getRestaurantReservations = async (filter: any, restaurantId: string): Promise<Reservation[]> =>
+  ReservationSchema.find(filter).populate({ path: 'restaurant', match: { id: restaurantId }, select: 'id' });
+const updateRestaurantReservation = async (
   filter: any,
   newData: { $set?: Partial<Omit<Reservation, 'id'>> }
 ): Promise<Reservation> => ReservationSchema.findOneAndUpdate(filter, newData, { new: true });
-const addReservation = async (data: Reservation<ObjectId, ObjectId>) => await new ReservationSchema(data).save();
-const removeReservationById = async (id: string): Promise<void> => ReservationSchema.findOneAndDelete<void>({ id });
+const addRestaurantReservation = async (data: Reservation<ObjectId, ObjectId>) =>
+  await new ReservationSchema(data).save();
+const removeRestaurantReservationById = async (id: string): Promise<void> =>
+  ReservationSchema.findOneAndDelete<void>({ id });
 
-export default {
-  getReservation,
-  getReservations,
-  addReservation,
-  updateReservation,
-  removeReservationById,
+export {
+  getRestaurantReservation,
+  getRestaurantReservations,
+  addRestaurantReservation,
+  updateRestaurantReservation,
+  removeRestaurantReservationById,
 };

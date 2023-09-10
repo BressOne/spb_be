@@ -1,9 +1,8 @@
-import Restaurant from '../models/restaurant';
-import Table from '../models/table';
-import Guest from '../models/guest';
-import Reservation from '../models/reservation';
 import { v4 } from 'uuid';
-import { ObjectId } from 'mongoose';
+import { addRestaurantReservation } from 'src/models/reservation';
+import { addGuest, getGuest } from 'src/models/guest';
+import { addRestaurantTable, getRestaurantTable } from 'src/models/table';
+import { addRestaurant, findRestaurant } from 'src/models/restaurant';
 
 const random = (length) => {
   let result = '';
@@ -19,7 +18,7 @@ const random = (length) => {
 
 export const propogateDemo = async () => {
   const restaurantId = v4();
-  await Restaurant.addRestaurant({
+  await addRestaurant({
     id: restaurantId,
     name: random(8),
     workingHours: {
@@ -54,33 +53,33 @@ export const propogateDemo = async () => {
     },
     timezoneOffsetMinutes: 120,
   });
-  const restaurant = await Restaurant.getRestaurant({ id: restaurantId });
+  const restaurant = await findRestaurant({ id: restaurantId });
   for (let index = 0; index < 5; index++) {
-    await Table.addRestaurantTable({ id: v4(), restaurantObjectId: restaurant._id });
+    await addRestaurantTable({ id: v4(), restaurantObjectId: restaurant._id });
   }
   for (let index = 0; index < 5; index++) {
-    await Guest.addGuest({
+    await addGuest({
       id: v4(),
       name: random(10),
       phonenumber: `+${Math.floor(Math.random() * Math.pow(10, 10))}`,
     });
   }
   for (let index = 0; index < 5; index++) {
-    const table = await Table.getRestaurantTable({}, restaurantId);
-    const guest = await Guest.getGuest({});
+    const table = await getRestaurantTable({}, restaurantId);
+    const guest = await getGuest({});
     const start = new Date();
     start.setHours(2 + index, 0, 0, 0);
     const end = new Date();
     end.setHours(3 + index, 0, 0, 0);
 
-    await Reservation.addReservation({
+    await addRestaurantReservation({
       id: v4(),
       table: table._id,
       guest: guest._id,
       meta: {
         personsToServe: Math.floor(Math.random() * 10),
-        startTimeUTC: start,
-        endTimeUTC: end,
+        startTime: start,
+        endTime: end,
         notes: `${random(Math.floor(Math.random() * 10))} ${random(Math.floor(Math.random() * 10))} ${random(
           Math.floor(Math.random() * 10)
         )} ${random(Math.floor(Math.random() * 10))} `,

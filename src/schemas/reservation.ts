@@ -7,8 +7,8 @@ const ReservationSchema = new Schema({
   guest: { type: Types.ObjectId, ref: 'GuestSchema', required: true },
   meta: {
     personsToServe: { type: Number, required: true },
-    startTimeUTC: { type: Date, required: true },
-    endTimeUTC: { type: Date, required: true },
+    startTime: { type: Date, required: true },
+    endTime: { type: Date, required: true },
     notes: { type: String, required: true },
   },
 });
