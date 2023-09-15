@@ -1,5 +1,5 @@
 import { ObjectId, Document } from 'mongoose';
-import { Table } from 'src/types/db';
+import { Table } from '../types/db';
 import TableSchema from '../schemas/table';
 
 const getRestaurantTable = async (filter: any, restaurantId: string): Promise<Document<ObjectId, any, Table>> =>
@@ -8,5 +8,6 @@ const getRestaurantTables = async (filter: any, restaurantId: string): Promise<D
   TableSchema.find(filter).populate({ path: 'restaurant', match: { id: restaurantId }, select: 'id' });
 const addRestaurantTable = async ({ id, restaurantObjectId }: { id: string; restaurantObjectId: ObjectId }) =>
   new TableSchema({ id, restaurant: restaurantObjectId }).save();
+const removeRestaurantTable = async ({ id }: { id: string }) => TableSchema.findOneAndDelete({ id });
 
-export { getRestaurantTable, getRestaurantTables, addRestaurantTable };
+export { getRestaurantTable, getRestaurantTables, addRestaurantTable, removeRestaurantTable };

@@ -1,4 +1,4 @@
-import { Guest } from 'src/types/db';
+import { Guest } from '../types/db';
 import GuestSchema from '../schemas/guest';
 import { Document, ObjectId } from 'mongoose';
 

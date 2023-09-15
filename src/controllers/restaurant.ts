@@ -1,6 +1,6 @@
 import Koa from 'koa';
 import Router from 'koa-router';
-import { updateRestaurantByFilter, findRestaurant } from 'src/models/restaurant';
+import { updateRestaurantByFilter, findRestaurant } from '../models/restaurant';
 
 export const getRestaurant = async (
   ctx: Koa.ParameterizedContext<any, Router.IRouterParamContext<any, {}>, any>,

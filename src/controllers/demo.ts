@@ -1,8 +1,8 @@
 import { v4 } from 'uuid';
-import { addRestaurantReservation } from 'src/models/reservation';
-import { addGuest, getGuest } from 'src/models/guest';
-import { addRestaurantTable, getRestaurantTable } from 'src/models/table';
-import { addRestaurant, findRestaurant } from 'src/models/restaurant';
+import { addRestaurantReservation } from '../models/reservation';
+import { addGuest, getGuest } from '../models/guest';
+import { addRestaurantTable, getRestaurantTable } from '../models/table';
+import { addRestaurant, findRestaurant } from '../models/restaurant';
 
 const random = (length) => {
   let result = '';

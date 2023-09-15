@@ -1,5 +1,5 @@
 import { ObjectId, Document } from 'mongoose';
-import { Restaurant } from 'src/types/db';
+import { Restaurant } from '../types/db';
 import RestaurantSchema from '../schemas/restaurant';
 
 const findRestaurant = async (filter: any): Promise<Document<ObjectId, any, Restaurant> | null> =>

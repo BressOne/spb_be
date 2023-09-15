@@ -1,5 +1,5 @@
 import mongoose, { Schema, model } from 'mongoose';
-import { Restaurant } from 'src/types/db';
+import { Restaurant } from '../types/db';
 import { v4 } from 'uuid';
 
 const Timeframe = new mongoose.Schema({

@@ -1,8 +1,8 @@
 import Koa from 'koa';
 import Router from 'koa-router';
 import { v4 } from 'uuid';
-import { findRestaurant } from 'src/models/restaurant';
-import { getRestaurantTables, addRestaurantTable, getRestaurantTable } from 'src/models/table';
+import { findRestaurant } from '../models/restaurant';
+import { getRestaurantTables, addRestaurantTable, getRestaurantTable, removeRestaurantTable } from '../models/table';
 
 export const getTable = async (
   ctx: Koa.ParameterizedContext<any, Router.IRouterParamContext<any, {}>, any>,
@@ -47,6 +47,26 @@ export const addTable = async (
     return;
   }
   const table = await addRestaurantTable({ id: v4(), restaurantObjectId: restaurant._id });
+  ctx.response.body = table;
+  await next();
+};
+
+export const removeTable = async (
+  ctx: Koa.ParameterizedContext<any, Router.IRouterParamContext<any, {}>, any>,
+  next: Koa.Next
+) => {
+  const restaurant = await findRestaurant({ id: ctx.params.restaurantId });
+  if (!restaurant) {
+    ctx.response.status = 400;
+    await next();
+    return;
+  }
+  const table = await removeRestaurantTable({ id: ctx.params.tableId });
+  if (!table) {
+    ctx.response.status = 404;
+    await next();
+    return;
+  }
   ctx.response.body = table;
   await next();
 };

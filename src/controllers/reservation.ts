@@ -1,9 +1,9 @@
 import Koa from 'koa';
 import Router from 'koa-router';
 import { v4 } from 'uuid';
-import { getRestaurantTable } from 'src/models/table';
-import { addGuest, getGuest } from 'src/models/guest';
-import { addRestaurantReservation, getRestaurantReservations } from 'src/models/reservation';
+import { getRestaurantTable } from '../models/table';
+import { addGuest, getGuest } from '../models/guest';
+import { addRestaurantReservation, getRestaurantReservations } from '../models/reservation';
 
 export const getReservations = async (
   ctx: Koa.ParameterizedContext<any, Router.IRouterParamContext<any, {}>, any>,

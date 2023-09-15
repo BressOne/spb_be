@@ -1,6 +1,6 @@
 import Koa from 'koa';
 import Router from 'koa-router';
-import { getGuest } from 'src/models/guest';
+import { getGuest } from '../models/guest';
 
 export const findGuest = async (
   ctx: Koa.ParameterizedContext<any, Router.IRouterParamContext<any, {}>, any>,

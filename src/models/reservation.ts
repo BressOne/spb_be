@@ -1,5 +1,5 @@
 import { ObjectId } from 'mongoose';
-import { Reservation } from 'src/types/db';
+import { Reservation } from '../types/db';
 import ReservationSchema from '../schemas/reservation';
 
 const getRestaurantReservation = async (filter: any): Promise<Reservation | null> =>
