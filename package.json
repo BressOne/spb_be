@@ -9,7 +9,7 @@
   "scripts": {
     "start": "node ./dist/src/server.js",
     "build": "tsc -b",
-    "start-dev": "nodemon",
+    "dev": "nodemon",
     "start-local": "ts-node ./src/index.ts"
   },
   "author": "",

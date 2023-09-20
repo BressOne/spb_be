@@ -20,9 +20,10 @@ export type Restaurant = {
   timezoneOffsetMinutes: number;
 };
 
-export type Table<T = Restaurant> = {
+export type Table = {
   id: string;
-  restaurant?: T;
+  name: string;
+  restaurantId: string;
 };
 
 type ReservationMetadata = {
@@ -32,10 +33,10 @@ type ReservationMetadata = {
   notes?: string;
 };
 
-export type Reservation<T = Table, K = Guest> = {
+export type Reservation = {
   id: string;
-  table?: T;
-  guest?: K;
+  tableId: string;
+  guestName: string;
   meta: ReservationMetadata;
 };
 

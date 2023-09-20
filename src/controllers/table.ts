@@ -1,6 +1,7 @@
 import Koa from 'koa';
 import Router from 'koa-router';
 import { v4 } from 'uuid';
+import { removeRestaurantTableReservations } from '../models/reservation';
 import { findRestaurant } from '../models/restaurant';
 import { getRestaurantTables, addRestaurantTable, getRestaurantTable, removeRestaurantTable } from '../models/table';
 
@@ -9,14 +10,7 @@ export const getTable = async (
   next: Koa.Next
 ) => {
   const table = await getRestaurantTable({ id: ctx.params.tableId }, ctx.params.restaurantId);
-  // its a tricky thing about populated mongodb refs
-  // mongodb can serch throug a document fields, that actually belong to it
-  // and if populated reference field does not match the query, it'll be 'null'
-  // actually it can be null when there is no existing ref now - it does not work like a sql foreign keys here
-  // therefre having reference key here below is a signal that there is no such entity, matching query for subfield
-  // handling this manually here as not going to denorm data. Check if you intersted: https://www.mongodb.com/blog/post/6-rules-of-thumb-for-mongodb-schema-design
-  //@ts-ignore
-  if (table && table.restaurant) {
+  if (table) {
     ctx.response.body = table;
   } else {
     ctx.response.status = 404;
@@ -30,8 +24,8 @@ export const getTables = async (
   next: Koa.Next
 ) => {
   const tables = await getRestaurantTables({}, ctx.params.restaurantId);
-  //@ts-ignore
-  ctx.response.body = tables.filter((t) => t.restaurant);
+
+  ctx.response.body = tables;
 
   await next();
 };
@@ -46,7 +40,12 @@ export const addTable = async (
     await next();
     return;
   }
-  const table = await addRestaurantTable({ id: v4(), restaurantObjectId: restaurant._id });
+  const { name } = ctx.request.body as { name: string };
+  const table = await addRestaurantTable({
+    id: v4(),
+    name,
+    restaurantId: restaurant.id,
+  });
   ctx.response.body = table;
   await next();
 };
@@ -61,12 +60,14 @@ export const removeTable = async (
     await next();
     return;
   }
-  const table = await removeRestaurantTable({ id: ctx.params.tableId });
+  // TODO: create a trabnsaction
+  const table = await removeRestaurantTable(ctx.params.tableId);
   if (!table) {
     ctx.response.status = 404;
     await next();
     return;
   }
+  await removeRestaurantTableReservations({ tableId: table.id });
   ctx.response.body = table;
   await next();
 };

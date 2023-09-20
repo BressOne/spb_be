@@ -1,17 +1,43 @@
 import Koa from 'koa';
 import Router from 'koa-router';
 import { v4 } from 'uuid';
-import { getRestaurantTable } from '../models/table';
-import { addGuest, getGuest } from '../models/guest';
-import { addRestaurantReservation, getRestaurantReservations } from '../models/reservation';
+import { getRestaurantTable, getRestaurantTables } from '../models/table';
+import {
+  addRestaurantReservation,
+  getRestaurantReservations,
+  removeRestaurantReservationByFilter,
+} from '../models/reservation';
 
 export const getReservations = async (
   ctx: Koa.ParameterizedContext<any, Router.IRouterParamContext<any, {}>, any>,
   next: Koa.Next
 ) => {
-  const reservations = await getRestaurantReservations({}, ctx.params.restaurantId);
-  //@ts-ignore
-  ctx.response.body = reservations.filter((t) => t.restaurant);
+  if (ctx.params.tableId) {
+    ctx.response.body = await getRestaurantReservations({ tableId: ctx.params.tableId });
+  } else {
+    const tables = await getRestaurantTables({}, ctx.params.restaurantId);
+    ctx.response.body = await getRestaurantReservations({ tableId: { $in: tables.map((t) => t.id) } });
+  }
+
+  await next();
+};
+
+export const removeReservation = async (
+  ctx: Koa.ParameterizedContext<any, Router.IRouterParamContext<any, {}>, any>,
+  next: Koa.Next
+) => {
+  const table = await getRestaurantTable({ id: ctx.params.tableId }, ctx.params.restaurantId);
+  if (!table) {
+    ctx.response.status = 400;
+    await next();
+    return;
+  }
+
+  await removeRestaurantReservationByFilter({
+    id: ctx.params.reservationId,
+    tableId: ctx.params.tableId,
+  });
+  ctx.response.status = 200;
   await next();
 };
 
@@ -19,41 +45,31 @@ export const addReservation = async (
   ctx: Koa.ParameterizedContext<any, Router.IRouterParamContext<any, {}>, any>,
   next: Koa.Next
 ) => {
-  const { personsToServe, startTime, endTime, notes, guestId, newGuestData } = ctx.body;
+  const {
+    guestName,
+    meta: { personsToServe, startTime, endTime, notes },
+  } = ctx.request.body as any;
 
   const table = await getRestaurantTable({ id: ctx.params.tableId }, ctx.params.restaurantId);
-  //@ts-ignore
-  if (!table || !table.restaurant) {
+
+  if (!table) {
     ctx.response.status = 400;
     await next();
     return;
   }
 
-  let guest;
-  if (guestId) {
-    const existingGuest = await getGuest({ id: guestId });
-    guest = existingGuest;
-    if (!existingGuest) {
-      ctx.response.status = 404;
-      await next();
-      return;
-    }
-  } else {
-    guest = await addGuest(newGuestData);
-  }
-
   const reservation = await addRestaurantReservation({
     id: v4(),
-    table: table._id,
-    guest: guest._id,
+    tableId: table.id,
+    guestName,
     meta: {
       personsToServe,
       startTime: new Date(startTime),
       endTime: new Date(endTime),
-      notes: notes,
+      notes,
     },
   });
-  //@ts-ignore
+
   ctx.response.body = reservation;
   await next();
 };
