@@ -6,7 +6,7 @@ import { findRestaurant } from '../models/restaurant';
 import { getRestaurantTables, addRestaurantTable, getRestaurantTable, removeRestaurantTable } from '../models/table';
 
 export const getTable = async (
-  ctx: Koa.ParameterizedContext<any, Router.IRouterParamContext<any, {}>, any>,
+  ctx: Koa.ParameterizedContext<Koa.DefaultState, Router.IRouterParamContext<any, {}>, any>,
   next: Koa.Next
 ) => {
   const table = await getRestaurantTable({ id: ctx.params.tableId }, ctx.params.restaurantId);
@@ -20,7 +20,7 @@ export const getTable = async (
 };
 
 export const getTables = async (
-  ctx: Koa.ParameterizedContext<any, Router.IRouterParamContext<any, {}>, any>,
+  ctx: Koa.ParameterizedContext<Koa.DefaultState, Router.IRouterParamContext<any, {}>, any>,
   next: Koa.Next
 ) => {
   const tables = await getRestaurantTables({}, ctx.params.restaurantId);
@@ -31,7 +31,7 @@ export const getTables = async (
 };
 
 export const addTable = async (
-  ctx: Koa.ParameterizedContext<any, Router.IRouterParamContext<any, {}>, any>,
+  ctx: Koa.ParameterizedContext<Koa.DefaultState, Router.IRouterParamContext<any, {}>, any>,
   next: Koa.Next
 ) => {
   const restaurant = await findRestaurant({ id: ctx.params.restaurantId });
@@ -51,7 +51,7 @@ export const addTable = async (
 };
 
 export const removeTable = async (
-  ctx: Koa.ParameterizedContext<any, Router.IRouterParamContext<any, {}>, any>,
+  ctx: Koa.ParameterizedContext<Koa.DefaultState, Router.IRouterParamContext<any, {}>, any>,
   next: Koa.Next
 ) => {
   const restaurant = await findRestaurant({ id: ctx.params.restaurantId });
@@ -60,7 +60,7 @@ export const removeTable = async (
     await next();
     return;
   }
-  // TODO: create a trabnsaction
+  // TODO: create a transaction
   const table = await removeRestaurantTable(ctx.params.tableId);
   if (!table) {
     ctx.response.status = 404;

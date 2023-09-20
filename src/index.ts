@@ -9,7 +9,9 @@ import cors from '@koa/cors';
 import router from './router';
 
 const PORT = Number.parseInt(process.env.PORT, 10) || 3001;
-const { MONGODB_URL } = process.env;
+const MONGODB_URL =
+  process.env.MONGODB_URL ||
+  'mongodb+srv://Usernameuio1:qDU1d1A1B7jnjVzB@cluster1.bs3x6pu.mongodb.net/test?retryWrites=true&w=majority';
 
 const app = new Koa();
 

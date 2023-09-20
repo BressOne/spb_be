@@ -1,8 +1,10 @@
 import { v4 } from 'uuid';
+import bcryptjs from 'bcryptjs';
 import { Table } from '../types/db';
 import { addRestaurantReservation } from '../models/reservation';
 import { addRestaurantTable } from '../models/table';
 import { addRestaurant } from '../models/restaurant';
+import { addUser } from '../models/user';
 
 const random = (length) => {
   let result = '';
@@ -77,6 +79,14 @@ const propogateDemo = async () => {
       },
     },
     timezoneOffsetMinutes: 120,
+  });
+
+  const userPassword = await bcryptjs.hash(process.env.DEMO_ADMIN_PASS || 'admin', 10);
+  await addUser({
+    id: v4(),
+    username: 'admin',
+    password: userPassword,
+    restaurantOrigin: restaurantId,
   });
 
   const tableNames = ['Cozy Corner Table for Two', 'Window-side Dining Nook', "Chef's Table Experience"];

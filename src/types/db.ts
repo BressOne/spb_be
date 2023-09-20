@@ -40,8 +40,9 @@ export type Reservation = {
   meta: ReservationMetadata;
 };
 
-export type Guest = {
+export type User = {
   id: string;
-  name: string;
-  phonenumber: string;
+  username: string;
+  restaurantOrigin: string;
+  password: string;
 };
