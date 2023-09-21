@@ -1,4 +1,4 @@
-import Ajv, { ErrorObject } from 'ajv';
+import Ajv from 'ajv';
 
 export type DataPathPart = string | number;
 export type DataPath = Array<DataPathPart>;
@@ -46,12 +46,12 @@ function validateBySchema<T>({ data, schema }: { data: unknown; schema: Object }
   const validate = ajv.compile(schema);
   const valid = validate(data);
   if (!valid) {
-    const firstError: ErrorObject & { dataPath: string } = validate.errors && validate.errors[0];
+    const firstError = validate.errors && validate.errors[0];
     return validateFailure(
       firstError
         ? {
             message: firstError.message || UNKNOWN_SCHEMA_VALIDATION_ERROR,
-            dataPath: convertAjvDataPath(firstError.dataPath),
+            dataPath: convertAjvDataPath(firstError.instancePath),
           }
         : { message: UNKNOWN_SCHEMA_VALIDATION_ERROR }
     );

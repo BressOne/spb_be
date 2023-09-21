@@ -1,6 +1,7 @@
 type GetReservationsParams =
-  | { tableId: string }
+  | { tableId: string; restaurantId: undefined }
   | {
+      tableId: undefined;
       restaurantId: string;
     };
 export default GetReservationsParams;

@@ -66,7 +66,7 @@ export const addTable = async (ctx: CustomAuthorizedContext, next: Koa.Next) => 
     await next();
     return;
   }
-  const { name } = data;
+  const { name } = data.value;
   const table = await addRestaurantTable({
     id: v4(),
     name,

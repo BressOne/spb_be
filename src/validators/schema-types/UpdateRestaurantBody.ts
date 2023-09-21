@@ -13,10 +13,10 @@ type WorkingHours = {
   sunday?: Timeframe;
 };
 
-type UpdateRestaurantBody = {
+type UpdateRestaurantBody = Partial<{
   name: string;
   workingHours: WorkingHours;
   timezoneOffsetMinutes: number;
-};
+}>;
 
 export default UpdateRestaurantBody;

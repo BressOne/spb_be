@@ -81,7 +81,7 @@ const propogateDemo = async () => {
     timezoneOffsetMinutes: 120,
   });
 
-  const userPassword = await bcryptjs.hash(process.env.DEMO_ADMIN_PASS || 'admin', 10);
+  const userPassword = await bcryptjs.hash(process.env.INIT_ADMIN_PASS, 10);
   await addUser({
     id: v4(),
     username: 'admin',

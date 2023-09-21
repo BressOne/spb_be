@@ -15,8 +15,8 @@ const introspect = async (ctx: CustomAuthorizedContext, next: Koa.Next) => {
     bounceOff(ctx);
   }
 
-  const jwtResponse: { error: Error; decoded: Identity } = await new Promise((resolve, reject) => {
-    jwt.verify(token, process.env.TOKEN_KEY || 'dummy', (error: Error, decoded: Identity) => {
+  const jwtResponse: { error: Error; decoded: Identity } = await new Promise((resolve) => {
+    jwt.verify(token, process.env.TOKEN_KEY, (error: Error, decoded: Identity) => {
       resolve({ error, decoded });
     });
   });

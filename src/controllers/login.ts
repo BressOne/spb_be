@@ -7,7 +7,7 @@ import { ParametrizedKoaCtx } from '../types/controllers';
 
 export const introspect = async (ctx: ParametrizedKoaCtx, next: Koa.Next) => {
   const token = ctx.request.headers.authorization;
-  jwt.verify(token, process.env.TOKEN_KEY || 'dummy', async (err) => {
+  jwt.verify(token, process.env.TOKEN_KEY, async (err) => {
     ctx.response.status = 200;
     ctx.response.body = { allowed: !err };
     await next();
@@ -31,7 +31,7 @@ export const login = async (ctx: ParametrizedKoaCtx, next: Koa.Next) => {
     const compareResult = await bcryptjs.compare(password, dbPass);
 
     if (compareResult) {
-      const token = jwt.sign({ username: mdbUserName, id, restaurantOrigin }, process.env.TOKEN_KEY || 'dummy');
+      const token = jwt.sign({ username: mdbUserName, id, restaurantOrigin }, process.env.TOKEN_KEY);
       ctx.response.body = { token };
       ctx.response.status = 200;
     } else {
