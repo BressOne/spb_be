@@ -7,6 +7,8 @@ import mongoose from 'mongoose';
 import cors from '@koa/cors';
 
 import router from './router';
+import introspect from './middlewares/auth';
+import accessControll from './middlewares/accessControll';
 
 const PORT = Number.parseInt(process.env.PORT, 10) || 3001;
 const MONGODB_URL =
@@ -19,6 +21,8 @@ app.use(json());
 app.use(logger());
 app.use(bodyParser());
 app.use(cors());
+app.use(introspect);
+app.use(accessControll);
 app.use(router.routes());
 app.use(router.allowedMethods());
 

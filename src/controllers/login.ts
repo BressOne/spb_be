@@ -1,14 +1,21 @@
 import Koa from 'koa';
-import Router from 'koa-router';
 import jwt from 'jsonwebtoken';
 import bcryptjs from 'bcryptjs';
 import { getUser } from '../models/user';
+import { ParametrizedKoaCtx } from '../types/controllers';
 
-const login = async (
-  ctx: Koa.ParameterizedContext<Koa.DefaultState, Router.IRouterParamContext<any, {}>, any>,
-  next: Koa.Next
-) => {
-  const { username, password } = ctx.request.body as any;
+export const introspect = async (ctx: ParametrizedKoaCtx, next: Koa.Next) => {
+  const token = ctx.request.headers.authorization;
+  jwt.verify(token, process.env.TOKEN_KEY || 'dummy', async (err) => {
+    ctx.response.status = 200;
+    ctx.response.body = { allowed: !err };
+    await next();
+  });
+};
+
+export const login = async (ctx: ParametrizedKoaCtx, next: Koa.Next) => {
+  const { username, password } = ctx.request.body as Record<string, string>;
+
   const user = await getUser({ username });
 
   if (user) {
@@ -17,7 +24,7 @@ const login = async (
 
     if (compareResult) {
       const token = jwt.sign({ username: mdbUserName, id, restaurantOrigin }, process.env.TOKEN_KEY || 'dummy');
-      ctx.cookies.set('auth', token);
+      ctx.response.body = { token };
       ctx.response.status = 200;
     } else {
       ctx.response.status = 403;
@@ -27,5 +34,3 @@ const login = async (
   }
   await next();
 };
-
-export default login;

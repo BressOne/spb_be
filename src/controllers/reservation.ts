@@ -1,5 +1,4 @@
 import Koa from 'koa';
-import Router from 'koa-router';
 import { v4 } from 'uuid';
 import { getRestaurantTable, getRestaurantTables } from '../models/table';
 import {
@@ -7,11 +6,9 @@ import {
   getRestaurantReservations,
   removeRestaurantReservationByFilter,
 } from '../models/reservation';
+import { CustomAuthorizedContext } from '../types/controllers';
 
-export const getReservations = async (
-  ctx: Koa.ParameterizedContext<any, Router.IRouterParamContext<any, {}>, any>,
-  next: Koa.Next
-) => {
+export const getReservations = async (ctx: CustomAuthorizedContext, next: Koa.Next) => {
   if (ctx.params.tableId) {
     ctx.response.body = await getRestaurantReservations({ tableId: ctx.params.tableId });
   } else {
@@ -22,10 +19,7 @@ export const getReservations = async (
   await next();
 };
 
-export const removeReservation = async (
-  ctx: Koa.ParameterizedContext<any, Router.IRouterParamContext<any, {}>, any>,
-  next: Koa.Next
-) => {
+export const removeReservation = async (ctx: CustomAuthorizedContext, next: Koa.Next) => {
   const table = await getRestaurantTable({ id: ctx.params.tableId }, ctx.params.restaurantId);
   if (!table) {
     ctx.response.status = 400;
@@ -41,10 +35,7 @@ export const removeReservation = async (
   await next();
 };
 
-export const addReservation = async (
-  ctx: Koa.ParameterizedContext<any, Router.IRouterParamContext<any, {}>, any>,
-  next: Koa.Next
-) => {
+export const addReservation = async (ctx: CustomAuthorizedContext, next: Koa.Next) => {
   const {
     guestName,
     meta: { personsToServe, startTime, endTime, notes },

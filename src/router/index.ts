@@ -4,7 +4,7 @@ import propogateDemo from '../controllers/demo';
 import { getRestaurant, updateRestaurant } from '../controllers/restaurant';
 import { getTable, getTables, addTable, removeTable } from '../controllers/table';
 
-import login from '../controllers/login';
+import { login, introspect } from '../controllers/login';
 import { getReservations, addReservation, removeReservation } from '../controllers/reservation';
 
 const router = new Router();
@@ -16,6 +16,7 @@ router.get('/demo', async (ctx, next) => {
 });
 
 router.post('/login', login);
+router.post('/introspect', introspect);
 
 router.get('/restaurant/:id', getRestaurant);
 router.patch('/restaurant/:id', updateRestaurant);

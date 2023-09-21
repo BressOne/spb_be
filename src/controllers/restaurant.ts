@@ -1,25 +1,19 @@
 import Koa from 'koa';
-import Router from 'koa-router';
 import { updateRestaurantByFilter, findRestaurant } from '../models/restaurant';
+import { CustomAuthorizedContext } from '../types/controllers';
 
-export const getRestaurant = async (
-  ctx: Koa.ParameterizedContext<any, Router.IRouterParamContext<any, {}>, any>,
-  next: Koa.Next
-) => {
+export const getRestaurant = async (ctx: CustomAuthorizedContext, next: Koa.Next) => {
   const restaurant = await findRestaurant({ id: ctx.params.id });
   if (restaurant) {
     ctx.response.body = restaurant;
+    await next();
   } else {
     ctx.response.status = 404;
+    await next();
   }
-
-  await next();
 };
 
-export const updateRestaurant = async (
-  ctx: Koa.ParameterizedContext<any, Router.IRouterParamContext<any, {}>, any>,
-  next: Koa.Next
-) => {
+export const updateRestaurant = async (ctx: CustomAuthorizedContext, next: Koa.Next) => {
   const restaurant = await updateRestaurantByFilter({ id: ctx.params.id }, { $set: ctx.request.body });
   if (restaurant) {
     ctx.response.body = restaurant;
