@@ -15,9 +15,9 @@
     "strict": false,
     "noImplicitAny": false,
     "strictPropertyInitialization": false,
-    "types": [],
+    "types": ["jest", "node"],
     "resolveJsonModule": true
   },
-  "include": ["src/*", "src/**/*.ts"],
+  "include": ["src/*", "src/**/*.ts", "src/tests/login.test.ts"],
   "exclude": ["node_modules", "./node_modules", "./node_modules/*", "./node_modules/@types/node/index.d.ts"]
 }

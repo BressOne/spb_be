@@ -1,8 +1,8 @@
 import Koa from 'koa';
 import jwt from 'jsonwebtoken';
 import bcryptjs from 'bcryptjs';
-import { validateLoginBody } from '../validators/login';
 import { getUser } from '../models/user';
+import { validateLoginBody } from '../validators/login';
 import { ParametrizedKoaCtx } from '../types/controllers';
 
 export const introspect = async (ctx: ParametrizedKoaCtx, next: Koa.Next) => {
