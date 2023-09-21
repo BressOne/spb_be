@@ -1,12 +1,26 @@
 import Koa from 'koa';
 import { v4 } from 'uuid';
+import {
+  validateAddTabeleBody,
+  validateAddTabeleParams,
+  validateGetTableParams,
+  validateGetTablesParams,
+  validateRemoveTabeleParams,
+} from '../validators/table';
 import { removeRestaurantTableReservations } from '../models/reservation';
 import { findRestaurant } from '../models/restaurant';
 import { getRestaurantTables, addRestaurantTable, getRestaurantTable, removeRestaurantTable } from '../models/table';
 import { CustomAuthorizedContext } from '../types/controllers';
 
 export const getTable = async (ctx: CustomAuthorizedContext, next: Koa.Next) => {
-  const table = await getRestaurantTable({ id: ctx.params.tableId }, ctx.params.restaurantId);
+  const params = validateGetTableParams(ctx.params);
+  if (params.ok === false) {
+    ctx.response.status = 400;
+    ctx.response.body = params;
+    await next();
+    return;
+  }
+  const table = await getRestaurantTable({ id: params.value.tableId }, params.value.restaurantId);
   if (table) {
     ctx.response.body = table;
   } else {
@@ -17,7 +31,14 @@ export const getTable = async (ctx: CustomAuthorizedContext, next: Koa.Next) => 
 };
 
 export const getTables = async (ctx: CustomAuthorizedContext, next: Koa.Next) => {
-  const tables = await getRestaurantTables({}, ctx.params.restaurantId);
+  const params = validateGetTablesParams(ctx.params);
+  if (params.ok === false) {
+    ctx.response.status = 400;
+    ctx.response.body = params;
+    await next();
+    return;
+  }
+  const tables = await getRestaurantTables({}, params.value.restaurantId);
 
   ctx.response.body = tables;
 
@@ -25,13 +46,27 @@ export const getTables = async (ctx: CustomAuthorizedContext, next: Koa.Next) =>
 };
 
 export const addTable = async (ctx: CustomAuthorizedContext, next: Koa.Next) => {
-  const restaurant = await findRestaurant({ id: ctx.params.restaurantId });
+  const params = validateAddTabeleParams(ctx.params);
+  if (params.ok === false) {
+    ctx.response.status = 400;
+    ctx.response.body = params;
+    await next();
+    return;
+  }
+  const data = validateAddTabeleBody(ctx.request.body);
+  if (data.ok === false) {
+    ctx.response.status = 400;
+    ctx.response.body = data;
+    await next();
+    return;
+  }
+  const restaurant = await findRestaurant({ id: params.value.restaurantId });
   if (!restaurant) {
     ctx.response.status = 400;
     await next();
     return;
   }
-  const { name } = ctx.request.body as { name: string };
+  const { name } = data;
   const table = await addRestaurantTable({
     id: v4(),
     name,
@@ -42,14 +77,21 @@ export const addTable = async (ctx: CustomAuthorizedContext, next: Koa.Next) => 
 };
 
 export const removeTable = async (ctx: CustomAuthorizedContext, next: Koa.Next) => {
-  const restaurant = await findRestaurant({ id: ctx.params.restaurantId });
+  const params = validateRemoveTabeleParams(ctx.params);
+  if (params.ok === false) {
+    ctx.response.status = 400;
+    ctx.response.body = params;
+    await next();
+    return;
+  }
+  const restaurant = await findRestaurant({ id: params.value.restaurantId });
   if (!restaurant) {
     ctx.response.status = 400;
     await next();
     return;
   }
   // TODO: create a transaction
-  const table = await removeRestaurantTable(ctx.params.tableId);
+  const table = await removeRestaurantTable(params.value.tableId);
   if (!table) {
     ctx.response.status = 404;
     await next();

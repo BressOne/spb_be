@@ -1,0 +1,28 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "anyOf": [
+        {
+            "properties": {
+                "tableId": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "tableId"
+            ],
+            "type": "object"
+        },
+        {
+            "properties": {
+                "restaurantId": {
+                    "type": "string"
+                }
+            },
+            "required": [
+                "restaurantId"
+            ],
+            "type": "object"
+        }
+    ]
+}
+

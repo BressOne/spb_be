@@ -1,6 +1,7 @@
 import Koa from 'koa';
 import jwt from 'jsonwebtoken';
 import bcryptjs from 'bcryptjs';
+import { validateLoginBody } from '../validators/login';
 import { getUser } from '../models/user';
 import { ParametrizedKoaCtx } from '../types/controllers';
 
@@ -14,7 +15,14 @@ export const introspect = async (ctx: ParametrizedKoaCtx, next: Koa.Next) => {
 };
 
 export const login = async (ctx: ParametrizedKoaCtx, next: Koa.Next) => {
-  const { username, password } = ctx.request.body as Record<string, string>;
+  const data = validateLoginBody(ctx.request.body);
+  if (data.ok === false) {
+    ctx.response.status = 400;
+    ctx.response.body = data;
+    await next();
+    return;
+  }
+  const { username, password } = data.value;
 
   const user = await getUser({ username });
 

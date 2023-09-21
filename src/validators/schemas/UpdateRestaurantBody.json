@@ -1,0 +1,128 @@
+{
+    "$schema": "http://json-schema.org/draft-07/schema#",
+    "properties": {
+        "name": {
+            "type": "string"
+        },
+        "timezoneOffsetMinutes": {
+            "type": "number"
+        },
+        "workingHours": {
+            "properties": {
+                "friday": {
+                    "properties": {
+                        "end": {
+                            "type": "string"
+                        },
+                        "start": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "end",
+                        "start"
+                    ],
+                    "type": "object"
+                },
+                "monday": {
+                    "properties": {
+                        "end": {
+                            "type": "string"
+                        },
+                        "start": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "end",
+                        "start"
+                    ],
+                    "type": "object"
+                },
+                "saturday": {
+                    "properties": {
+                        "end": {
+                            "type": "string"
+                        },
+                        "start": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "end",
+                        "start"
+                    ],
+                    "type": "object"
+                },
+                "sunday": {
+                    "properties": {
+                        "end": {
+                            "type": "string"
+                        },
+                        "start": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "end",
+                        "start"
+                    ],
+                    "type": "object"
+                },
+                "thursday": {
+                    "properties": {
+                        "end": {
+                            "type": "string"
+                        },
+                        "start": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "end",
+                        "start"
+                    ],
+                    "type": "object"
+                },
+                "tuesday": {
+                    "properties": {
+                        "end": {
+                            "type": "string"
+                        },
+                        "start": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "end",
+                        "start"
+                    ],
+                    "type": "object"
+                },
+                "wednesday": {
+                    "properties": {
+                        "end": {
+                            "type": "string"
+                        },
+                        "start": {
+                            "type": "string"
+                        }
+                    },
+                    "required": [
+                        "end",
+                        "start"
+                    ],
+                    "type": "object"
+                }
+            },
+            "type": "object"
+        }
+    },
+    "required": [
+        "name",
+        "timezoneOffsetMinutes",
+        "workingHours"
+    ],
+    "type": "object"
+}
+

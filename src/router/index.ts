@@ -9,11 +9,13 @@ import { getReservations, addReservation, removeReservation } from '../controlle
 
 const router = new Router();
 
-router.get('/demo', async (ctx, next) => {
-  await propogateDemo();
-  ctx.response.status = 200;
-  await next();
-});
+if (process.env.DEMO) {
+  router.get('/demo', async (ctx, next) => {
+    await propogateDemo();
+    ctx.response.status = 200;
+    await next();
+  });
+}
 
 router.post('/login', login);
 router.post('/introspect', introspect);
