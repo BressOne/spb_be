@@ -9,5 +9,7 @@ export const bounceOff = (ctx: CustomAuthorizedContext) => {
   });
 };
 
-export const shouldSuppressCheck = (ctx: CustomAuthorizedContext) =>
-  ctx.request.url === '/login' || ctx.request.url === '/introspect';
+export const shouldSuppressCheck = (ctx: CustomAuthorizedContext) => {
+  const routes = ['/login', '/introspect', '/demo'];
+  return routes.some((r) => r === ctx.request.url);
+};
