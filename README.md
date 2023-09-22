@@ -6,7 +6,7 @@ This repository contains an example implementation of a restaurant table reserva
 
 ## BE part
 
-Provided exercise is an example implementation of API based on NodeJS. This API operate over restaurant table reservations, tables and restaurant data.
+Provided exercise is an example implementation of API based on NodeJS. This API operate over restaurant table reservations, tables and restaurant data. This API has a UI client provided here: https://github.com/BressOne/spb_fe.
 
 To get started, ensure you are running nodeJS 18.17.1 LTS.
 
