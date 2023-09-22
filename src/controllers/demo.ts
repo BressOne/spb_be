@@ -89,7 +89,12 @@ const propogateDemo = async () => {
     restaurantOrigin: restaurantId,
   });
 
-  const tableNames = ['Cozy Corner Table for Two', 'Window-side Dining Nook', "Chef's Table Experience"];
+  const tableNames = [
+    'Cozy Corner Table for Two',
+    'Window-side Dining Nook',
+    "Chef's Table Experience",
+    'Lovely Table For Two',
+  ];
 
   const tableCreationPromises: Promise<Table>[] = [];
   for (let index = 0; index < tableNames.length; index++) {
@@ -100,8 +105,8 @@ const propogateDemo = async () => {
   const promises: Promise<unknown>[] = [];
   for (let index = 0; index < tables.length; index++) {
     const table = tables[index];
-    for (let i = 0; i < 4; i++) {
-      for (let day = 0; day < 2; day++) {
+    for (let i = 0; i < 11; i++) {
+      for (let day = 0; day < 5; day++) {
         const seed = Math.round(Math.random() * 12);
         const start = new Date();
         start.setHours(seed + 24 * day, 0, 0, 0);

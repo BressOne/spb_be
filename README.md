@@ -36,19 +36,13 @@ Stability is not guaranteed if you are using older versions of NodeJS.
 
 ## Installation
 
-To install dependencies, run the following command:
+- To install dependencies, run the following command: `yarn`
+- Paste your MongoDB connections tring to the `.env` file, save
+- To start the application in development mode with nodemon, use: `yarn dev` Or dev build with `yarn build` and `yarn start` commands. The app will appear on localhost:3001 by default. Another way to run setup - simply build a docker image out of provided Dockerfile
+- if you are using default `.env` file - hit `/demo` route so it'll propagate your db with demo data, but what is more important: you will have user with username 'admin' and password 'admin' to login.
+- the best way to use the API is to clone and install https://github.com/BressOne/spb_fe
 
-`bash yarn`
-
-Paste your MongoDB connections tring to the `.env` file, save.
-
-To start the application in development mode with nodemon, use:
-
-`bash yarn dev`
-
-Or dev build with `yarn build` and `yarn start` commands. The app will appear on localhost:3001 by default.
-
-Another way to run setup - simply build a docker image out of provided Dockerfile
+Happy explore!
 
 ## Environment
 
