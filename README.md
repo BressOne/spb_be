@@ -4,6 +4,16 @@
 
 This repository contains an example implementation of a restaurant table reservation API using Node.js.
 
+App is running and can be accessed here:
+|artefact| url |
+|--|--|
+| UI | https://spb-fe-app.onrender.com |
+| API | https://spb-Be-app.onrender.com |
+
+Use admin/admin creds to login.
+
+Happy use!
+
 ## BE part
 
 Provided exercise is an example implementation of API based on NodeJS. This API operate over restaurant table reservations, tables and restaurant data. This API has a UI client provided here: https://github.com/BressOne/spb_fe.
