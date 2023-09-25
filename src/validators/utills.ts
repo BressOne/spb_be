@@ -1,4 +1,5 @@
 import Ajv from 'ajv';
+import addFormats from 'ajv-formats';
 
 export type DataPathPart = string | number;
 export type DataPath = Array<DataPathPart>;
@@ -43,6 +44,8 @@ const convertAjvDataPath = (ajvDataPath: string): DataPath => ajvDataPath.split(
 
 function validateBySchema<T>({ data, schema }: { data: unknown; schema: Object }): ValidationResult<T> {
   const ajv = new Ajv({ allowUnionTypes: true });
+  addFormats(ajv);
+
   const validate = ajv.compile(schema);
   const valid = validate(data);
   if (!valid) {

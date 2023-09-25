@@ -3,7 +3,7 @@ type Timeframe = {
   end: string;
 };
 
-type WorkingHours = {
+export type WorkingHours = {
   monday?: Timeframe;
   tuesday?: Timeframe;
   wednesday?: Timeframe;

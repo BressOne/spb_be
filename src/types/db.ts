@@ -46,3 +46,13 @@ export type User = {
   restaurantOrigin: string;
   password: string;
 };
+
+export const week: Array<keyof WorkingHours> = [
+  'sunday',
+  'monday',
+  'tuesday',
+  'wednesday',
+  'thursday',
+  'friday',
+  'saturday',
+];

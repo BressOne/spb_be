@@ -12,7 +12,9 @@ import {
   validateAddReservationParams,
   validateGetReservationsParams,
   validateRemoveReservationParams,
+  validateReservationTime,
 } from '../validators/reservation';
+import { findRestaurant } from '../models/restaurant';
 
 export const getReservations = async (ctx: CustomAuthorizedContext, next: Koa.Next) => {
   const params = validateGetReservationsParams(ctx.params);
@@ -75,6 +77,17 @@ export const addReservation = async (ctx: CustomAuthorizedContext, next: Koa.Nex
     meta: { personsToServe, startTime, endTime, notes },
   } = data.value;
 
+  const restaurant = await findRestaurant({ id: params.value.restaurantId });
+  if (!restaurant) {
+    ctx.response.status = 404;
+    await next();
+  }
+
+  if (!validateReservationTime({ restaurant, reservation: { startTime, endTime } })) {
+    ctx.response.status = 400;
+    await next();
+    return;
+  }
   const table = await getRestaurantTable({ id: params.value.tableId }, params.value.restaurantId);
 
   if (!table) {
